@@ -22,11 +22,13 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Application
-    rhoCentralFoam
+    rhoCentralSPMFoam
 
 Description
     Density-based compressible flow solver based on central-upwind schemes of
-    Kurganov and Tadmor.
+    Kurganov and Tadmor. Use Smoothed Particle Method to make solid body motion
+    in fixed mesh, i.e. adding a body force at the momentum equation to make the
+    solid part has an impulse on the flow.
 
 \*---------------------------------------------------------------------------*/
 
@@ -180,7 +182,7 @@ int main(int argc, char *argv[])
 
         // --- Solve momentum
         solve(fvm::ddt(rhoU) + fvc::div(phiUp));
-
+        // phiUp = flux of p
         U.ref() =
             rhoU()
            /rho();

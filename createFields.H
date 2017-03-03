@@ -144,19 +144,13 @@ dimensionedScalar Xi
  transportProperties.lookup("Xi")
  ); //smoothed profile thickness
 
-dimensionedVector a
+dimensionedVector ab
 (
-    "a",
+    "ab",
     dimLength,
-    transportProperties.lookup("a")
+    transportProperties.lookup("ab")
  );// rectangle half length 
 
-dimensionedVector b 
-(
-    "b",
-    dimLength,
-    transportProperties.lookup("b")
- );//rectangle half width 
 
 //volScalarField dx = mag(xi.x()-a.x()); 
 volScalarField dx
@@ -169,9 +163,9 @@ volScalarField dx
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-    dx = mag(xi.component(0)-a.component(0)) 
+      mag(xi.component(0)-ab.component(0)) 
 );
-dx = mag(xi.component(0)-a.component(0)); 
+dx = mag(xi.component(0)-ab.component(0)); 
 
 //volScalarField dy = mag(xi.y()-a.y()); 
 volScalarField dy
@@ -184,13 +178,13 @@ volScalarField dy
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-    dy = mag(xi.component(1)-a.component(1)) 
+     mag(xi.component(1)-ab.component(1)) 
 );
-dy = mag(xi.component(1)-a.component(1)); 
+dy = mag(xi.component(1)-ab.component(1)); 
 
 //volScalarField d = mag(xx-xi);
 volScalarField d
-   (
+(
         IOobject
         (
             "d",
@@ -200,37 +194,10 @@ volScalarField d
             IOobject::AUTO_WRITE
         ),
     mag(xx-xi)	
-    );
+);
 d = mag(xx-xi);	
 
-Info << "define the sub-indicator" << endl;
-int fi = 0;
-if (((dy.component(1)-d) > 0) && ((dx.component(0)- d) > 0)){
-   fi = 1;
-}else if ( ((dy.component(1)-d) == 0) && ((dx.component(0) - d) == 0)){
-   fi = 0;
-}else{
-   fi = -2;
-}
-//If fi is positive, will be inside the wall; fi < 0 will be outside the wall; fi = 0 will be on the wall
-
-Info << "define the indicator phiPhi" << endl;
-/*
-volScalarField phiPhi
-    (
-        IOobject
-        (
-            "phiPhi",
-            runTime.timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::AUTO_WRITE
-        ),
-        0.5*(tanh((fi)/Xi)+1.0)
-    );
-  phiPhi = 0.5*(tanh((fi)/Xi)+1.0);
-*/ 
-
+#include "subIndicator.H"
 
 
 
