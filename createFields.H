@@ -98,3 +98,256 @@ autoPtr<compressible::turbulenceModel> turbulence
         thermo
     )
 );
+
+//Temp SPM Fields
+    Info<< "Reading radius Ra\n" << endl;
+
+    dimensionedScalar Ra
+    (
+        transportProperties.lookup("Ra")
+    );
+
+   volVectorField Ustar
+    (
+        IOobject
+        (
+            "Ustar",
+            runTime.timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        U
+    );
+
+//volVectorField xx = mesh.C();
+volVectorField xx
+  (
+        IOobject
+        (
+            "xx",
+            runTime.timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+	mesh.C()
+    );
+xx=mesh.C();
+
+dimensionedVector xi 
+(
+ "xi",
+ dimLength,
+ transportProperties.lookup("xi")
+ );// position of cylinder
+
+dimensionedScalar Xi
+(
+ "Xi",
+ dimLength,
+ transportProperties.lookup("Xi")
+ ); //smoothed profile thickness
+
+//volScalarField d=sqrt(magSqr(xx-xi));
+volScalarField d
+   (
+        IOobject
+        (
+            "d",
+            runTime.timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+	//	sqrt(magSqr(xx-xi))
+	sqrt(magSqr(xx))
+    );
+d=sqrt(magSqr(xx));
+
+
+   volScalarField phiPhi
+    (
+        IOobject
+        (
+            "phiPhi",
+            runTime.timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        0.5*(tanh((Ra-d)/Xi)+1.0)
+    );
+  phiPhi=0.5*(tanh((Ra-d)/Xi)+1.0);
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+//newly added for SPM:
+Info<< "Reading transportProperties\n" << endl;
+
+    IOdictionary transportProperties
+    (
+        IOobject
+        (
+            "transportProperties",
+            runTime.constant(),
+            mesh,
+            IOobject::MUST_READ_IF_MODIFIED,
+            IOobject::NO_WRITE
+        )
+    );
+
+
+//volVectorField xx = mesh.C(); coordinate for cell center
+volVectorField xx
+ (
+    IOobject
+    (
+        "xx",
+        runTime.timeName(),
+        mesh,
+        IOobject::MUST_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh.C()
+ );
+xx = mesh.C();
+
+dimensionedVector xi 
+(
+    "xi",
+    dimLength,
+    transportProperties.lookup("xi")
+ );// position of rectangle center
+
+dimensionedScalar Xi
+(
+ "Xi",
+ dimLength,
+ transportProperties.lookup("Xi")
+ ); //smoothed profile thickness
+
+dimensionedVector ab
+(
+    "ab",
+    dimLength,
+    transportProperties.lookup("ab")
+ );// rectangle half length 
+
+
+//volScalarField dx = mag(xi.x()-a.x()); 
+volScalarField dx
+(
+        IOobject
+        (
+            "dx",
+            runTime.timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+      mag(xi.component(0)-ab.component(0)) 
+);
+dx = mag(xi.component(0)-ab.component(0)); 
+
+//volScalarField dy = mag(xi.y()-a.y()); 
+volScalarField dy
+(
+        IOobject
+        (
+            "dy",
+            runTime.timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+     mag(xi.component(1)-ab.component(1)) 
+);
+dy = mag(xi.component(1)-ab.component(1)); 
+
+//volScalarField d = mag(xx-xi);
+volScalarField d
+(
+        IOobject
+        (
+            "d",
+            runTime.timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+    mag(xx-xi)	
+);
+d = mag(xx-xi);	
+
+#include "subIndicator.H"
+#include "indicator.H"
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
