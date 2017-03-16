@@ -198,7 +198,7 @@ volScalarField d
 d = mag(xx-xi);	
 
 #include "subIndicator.H"
-
+#include "indicator.H"
 
 
 

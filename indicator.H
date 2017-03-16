@@ -10,7 +10,7 @@ volScalarField phiPhi
             IOobject::NO_READ,
             IOobject::AUTO_WRITE
         ),
-        0.5*(tanh((fi)/Xi)+1.0)
+    0.5*(tanh((fi)/Xi)+1.0)
 );
 phiPhi = 0.5*(tanh((fi)/Xi)+1.0);
 
